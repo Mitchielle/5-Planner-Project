@@ -1,0 +1,317 @@
+<%- include('../partials/header') %>
+    <div class="container col-md-10">
+        <%- include('../partials/dropdown') %>
+        <% for (let i = 0; i < goal.length; i++) { %>
+        <div class="card border border-secondary rounded-3 m-3  shadow">
+            <form action="/goals/editgoal/<%= user[i].id %>/<%= goal[i].id %>" method="POST">
+            <div class="card-body">
+                 <h2 class="my-3 text-center"><%= user[i].name %>'s <%= goal[i].category %> Goal</h2>
+                 <div  class="d-grid gap-2 mx-md-5">
+                     <div class="mt-4 mb-3 row">
+                        <h6 class="col-md-2">Goal: </h6>
+                        <div class="col-md-10"><%= goal[i].title %> </div>
+                     </div>
+
+                     <div class="mb-3 row">
+                        <h6 class="col-md-2">Duration: </h6>
+                        <div class="col-md-10"> 
+                            <%= goal[i].startDate%> -to- <%= goal[i].endDate %>
+                        </div>
+                     </div>
+                    <div class="form-group mb-3">
+                        <label for="description" class="form-label"><h6>Description</h6></label>
+                        <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Why do you need to achieve goal, how does achieving this goal help you and how will you describe it's success?" style="color:#0062CC"></i>
+                            <textarea type="text" name="description" id="description" class="form-control"><%= goal[i].description%></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="resources" class="form-label"><h6>Resources</h6></label>
+                        <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="What tools or resources do you need to achieve this goal?" style="color:#0062CC"></i>
+                        <textarea type="text" name="resources" id="resources" class="form-control"><%= goal[i].resources%></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="reward" class="form-label"><h6>Reward</h6></label>
+                        <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Reward yourself for achieving this goal" style="color:#0062CC"></i>
+                        <textarea type="text" name="reward" id="reward" class="form-control"><%= goal[i].reward%></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
+                        <button type="submit" class="btn btn-light rounded-pill">Save</button>
+                    </div>
+                </form>
+                     <!--Priorites-->
+                     <div class="row mb-3">
+                        <%- include('../partials/_priorities') %>
+            
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
+                            <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                <% if(dist != 0) {  dist.forEach(dist => {%>
+                                    <% if (dist.intervalset === 'Interval 1') { %>
+                                    <%= dist.intervals  %>
+                                </h6>
+                                <form action="/goals/newprior/<%= user[i].id %>/<%= goal[i].id %>" method="POST" id="inputprior">
+                                    <div class=" row mx-1 my-3">
+                                        <div class="col-9 ">
+                                            <input type="text" name="priority" id="priority" class="form-control" placeholder="Add new priority">
+                                            <input type="text" name="intervals" id="priority" class="form-control"  value="<%= dist.intervals %>" hidden>
+                                            <input type="text" name="intervalset" id="priority" class="form-control" value="<%= dist.intervalset %>" hidden> 
+                                        </div>
+                                        <div class="d-flex justify-content-end col-3 mb-3">
+                                            <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" placeholder="Due date"/>
+                                            <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-plus'></i></btn>
+                                        </div>  
+                                    </div>
+                                </form>
+                                    <% }})}%>
+                                <hr>
+                            <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 1') { %>
+                                <% if (prior.checked === 'true') { %>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <a id="checker" ><i class='far fa-check-square'></i></a>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>   
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end col-2">
+                                            <%= prior.dueDate %>
+                                        </div>
+                                    </div><hr>
+                                    <% } else { %>
+                                        <form action="/goals/editprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" method="POST" >
+                                            <div class=" row mx-1">
+                                                <div class="col-9 ">
+                                                    <input type="text" name="priority" id="priority" class="form-control" value="<%= prior.priority %>"> 
+                                                </div>
+                                                <div class="d-flex justify-content-end col-3 mb-3">
+                                                    <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" value="<%= prior.dueDate %>"/>
+                                                    <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-check'></i></btn>
+                                                </div>  
+                                            </div>
+                                        </form>
+                                    <% } %>
+                                <% }})}%> 
+                            </div>
+                            
+                            <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 2') { %>
+                                        <%= dist.intervals  %>
+                                    </h6>
+                                    <form action="/goals/newprior/<%= user[i].id %>/<%= goal[i].id %>" method="POST" id="inputprior">
+                                        <div class=" row mx-1">
+                                            <div class="col-9 ">
+                                                <input type="text" name="priority" id="priority" class="form-control" placeholder="Add new priority">
+                                                <input type="text" name="intervals" id="priority" class="form-control"  value="<%= dist.intervals %>" hidden>
+                                                <input type="text" name="intervalset" id="priority" class="form-control" value="<%= dist.intervalset %>" hidden> 
+                                            </div>
+                                            <div class="d-flex justify-content-end col-3 mb-3">
+                                                <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" placeholder="Due date"/>
+                                                <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-plus'></i></btn>
+                                            </div>  
+                                        </div>
+                                        </form>
+                                        <% }})}%>
+                                        <hr>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset == 'Interval 2') { %>
+                                    <% if (prior.checked === 'true') { %>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <a id="checker" ><i class='far fa-check-square'></i></a>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>   
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end col-2">
+                                            <%= prior.dueDate %>
+                                        </div>
+                                    </div><hr>
+                                    <% } else { %>
+                                        <form action="/goals/editprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" method="POST" >
+                                            <div class=" row mx-1">
+                                                <div class="col-9 ">
+                                                    <input type="text" name="priority" id="priority" class="form-control" value="<%= prior.priority %>"> 
+                                                </div>
+                                                <div class="d-flex justify-content-end col-3 mb-3">
+                                                    <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" value="<%= prior.dueDate %>"/>
+                                                    <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-check'></i></btn>
+                                                </div>  
+                                            </div>
+                                        </form>
+                                        <% } %>
+                                <% }})}%>
+                            </div>
+                            <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav3-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3"> 
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 3') { %>
+                                        </h6>
+                                        <form action="/goals/newprior/<%= user[i].id %>/<%= goal[i].id %>" method="POST" id="inputprior">
+                                            <div class=" row mx-1">
+                                                <div class="col-9 ">
+                                                    <input type="text" name="priority" id="priority" class="form-control" placeholder="Add new priority">
+                                                    <input type="text" name="intervals" id="priority" class="form-control"  value="<%= dist.intervals %>" hidden>
+                                                    <input type="text" name="intervalset" id="priority" class="form-control" value="<%= dist.intervalset %>" hidden> 
+                                                </div>
+                                                <div class="d-flex justify-content-end col-3 mb-3">
+                                                    <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" placeholder="Due date"/>
+                                                    <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-plus'></i></btn>
+                                                </div>  
+                                            </div>
+                                            </form>
+                                            <% }})}%>
+                                            <hr>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 3') { %>
+                                    <% if (prior.checked === 'true') { %>
+                                        <div class=" row mx-1">
+                                            <div class="col-10 ">
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <a id="checker" ><i class='far fa-check-square'></i></a>
+                                                    </div>
+                                                    <div class="col-11"><%= prior.priority %></div>   
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-end col-2">
+                                                <%= prior.dueDate %>
+                                            </div>
+                                        </div><hr>
+                                        <% } else { %>
+                                            <form action="/goals/editprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" method="POST" >
+                                                <div class=" row mx-1">
+                                                    <div class="col-9 ">
+                                                        <input type="text" name="priority" id="priority" class="form-control" value="<%= prior.priority %>"> 
+                                                    </div>
+                                                    <div class="d-flex justify-content-end col-3 mb-3">
+                                                        <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" value="<%= prior.dueDate %>"/>
+                                                        <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-check'></i></btn>
+                                                    </div>  
+                                                </div>
+                                            </form>
+                                            <% } %>
+                                <% }})}%>
+                            </div>
+                            <div class="tab-pane fade" id="nav-4" role="tabpanel" aria-labelledby="nav-4-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 4') { %>
+                                        <%= dist.intervals  %>
+                                    </h6>
+                                    <form action="/goals/newprior/<%= user[i].id %>/<%= goal[i].id %>" method="POST" id="inputprior">
+                                        <div class=" row mx-1">
+                                            <div class="col-9 ">
+                                                <input type="text" name="priority" id="priority" class="form-control" placeholder="Add new priority">
+                                                <input type="text" name="intervals" id="priority" class="form-control"  value="<%= dist.intervals %>" hidden>
+                                                <input type="text" name="intervalset" id="priority" class="form-control" value="<%= dist.intervalset %>" hidden> 
+                                            </div>
+                                            <div class="d-flex justify-content-end col-3 mb-3">
+                                                <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" placeholder="Due date"/>
+                                                <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-plus'></i></btn>
+                                            </div>  
+                                        </div>
+                                        </form>
+                                        <% }})}%>
+                                        <hr>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 4') { %>
+                                    <% if (prior.checked === 'true') { %>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <a id="checker" ><i class='far fa-check-square'></i></a>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>   
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end col-2">
+                                            <%= prior.dueDate %>
+                                        </div>
+                                    </div><hr>
+                                    <% } else { %>
+                                        <form action="/goals/editprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" method="POST" >
+                                            <div class=" row mx-1">
+                                                <div class="col-9 ">
+                                                    <input type="text" name="priority" id="priority" class="form-control" value="<%= prior.priority %>"> 
+                                                </div>
+                                                <div class="d-flex justify-content-end col-3 mb-3">
+                                                    <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" value="<%= prior.dueDate %>"/>
+                                                    <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-check'></i></btn>
+                                                </div>  
+                                            </div>
+                                        </form>
+                                    <% } %>
+                                <% }})}%> 
+                            </div>
+                            <div class="tab-pane fade" id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 5') { %>
+                                        <%= dist.intervals  %>  
+                                    </h6>
+                                    <form action="/goals/newprior/<%= user[i].id %>/<%= goal[i].id %>" method="POST" id="inputprior">
+                                        <div class=" row mx-1">
+                                            <div class="col-9 ">
+                                                <input type="text" name="priority" id="priority" class="form-control" placeholder="Add new priority">
+                                                <input type="text" name="intervals" id="priority" class="form-control"  value="<%= dist.intervals %>" hidden>
+                                                <input type="text" name="intervalset" id="priority" class="form-control" value="<%= dist.intervalset %>" hidden> 
+                                            </div>
+                                            <div class="d-flex justify-content-end col-3 mb-3">
+                                                <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" placeholder="Due date" />
+                                                <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-plus'></i></btn>
+                                            </div>  
+                                        </div>
+                                        </form>
+                                        <% }})}%>
+                                        <hr>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 5') { %>
+                                    <% if (prior.checked === 'true') { %>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <a id="checker" ><i class='far fa-check-square'></i></a>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>   
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end col-2">
+                                            <%= prior.dueDate %>
+                                        </div>
+                                    </div>
+                                    <% } else { %>
+                                        <form action="/goals/editprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" method="POST" >
+                                            <div class=" row mx-1">
+                                                <div class="col-9 ">
+                                                    <input type="text" name="priority" id="priority" class="form-control" value="<%= prior.priority %>"> 
+                                                </div>
+                                                <div class="d-flex justify-content-end col-3 mb-3">
+                                                    <input class="form-control" type="text" data-format="dd/mm/yyyy" id="" name="dueDate" value="<%= prior.dueDate %>"/>
+                                                    <button type="submit" class="btn btn-light text-primary ms-2" id="editprior"><i class='fas fa-check'></i></btn>
+                                                </div>  
+                                            </div>
+                                        </form>
+                                    <% } %>
+                                <% }})}%>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="/goals/overview/<%= user[i].id %>/<%= goal[i].id %>" class="btn btn-secondary rounded-pill px-3 d-none d-lg-block" >Done</a>
+                    <a href="/goals/complete/<%= user[i].id %>/<%= goal[i].id %>" class="btn btn-secondary rounded-pill px-3 mx-3 d-none d-lg-block" >Completed</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <%- include('../partials/footer') %>

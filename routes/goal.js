@@ -9,11 +9,23 @@ router.get('/new/:id', goalController.addgoal)
 //post new goal
 router.post('/new/:id', goalController.create)
 
+//get goal
+router.get('/edit/:id/:goalid', goalController.edit)
+
+//update goal
+router.post('/editgoal/:id/:goalid', goalController.editgoal)
+
+//update priorities
+router.post('/editprior/:id/:goalid/:priorid', goalController.editprior)
+
 //priorities
 router.get('/priorities/:id/:goalid', goalController.priorities)
 
 //post priorities
 router.post('/priorities/:id/:goalid', goalController.addpriorities)
+
+//new priorities
+router.post('/newprior/:id/:goalid', goalController.newprior)
 
 //overview
 router.get('/overview/:id/:goalid', goalController.goalplan)

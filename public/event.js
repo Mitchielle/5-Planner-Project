@@ -40,20 +40,21 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   uiLibrary: 'bootstrap4',
   iconsLibrary: 'fontawesome',
   minDate: function () {
-    return $('#startDate').val();
+     $('#startDate').val();
   },
   maxDate: function () {
-      return $('#endDate').val();
+       $('#endDate').val();
   }
 });
 
 
 //intervals
-
 $(function(){
+
 if( $('#intset').val() === 'Interval 5'){
   $('#newint').hide()
 }
+
 if($('#intervals').children("option:selected").attr('value') !== $('#hidint').val()){
   $('#intset').val('Interval 1')
  if ($('#intsethead').val() === 'Interval 1' && $('#intervals').val() !== $('#hidint').val() ){
@@ -67,6 +68,7 @@ if($('#intervals').children("option:selected").attr('value') !== $('#hidint').va
   }
 }
 })
+
 
 var x = $('#hidint').val();
 var y = $('#intsethead').val();

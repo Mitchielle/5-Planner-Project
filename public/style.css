@@ -59,3 +59,7 @@ body {
   background-color: #504e4d18;
 }
 
+#addnewprior{
+  cursor: pointer;
+  text-decoration: none;
+}

@@ -33,6 +33,8 @@ app.use(session({
 app.use(express.static('public'))
 
 
+
+
 //mysql apostrophe
 app.use(mysqlApostrophe);
 

@@ -283,7 +283,7 @@ exports.check = (req, res) => {
 })
 }
 
-//post checkbox
+//post checkbox to uncheck
 exports.uncheck = (req, res) => {
 
     pool.getConnection((err, connection) => {
@@ -419,6 +419,200 @@ exports.delgoal = (req, res) => {
                 console.log(err);
             }
             console.log('The user data from: \n', user, goal);
+        });
+    });
+});
+});
+});
+}
+
+//view edit goalplan
+exports.edit = (req, res) => {
+    //Connect to MySQL
+    pool.getConnection((err, connection) => {
+        if(err) throw err; //not connected
+        console.log('Connected as ID ' + connection.threadId);
+//get user
+        var sqli = "SELECT * FROM user WHERE id = ? ";
+        //Use the connection
+        connection.query(sqli, [req.params.id], (err, user) => {
+        if(err)throw(err);
+//get goals
+        var sqlg = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward FROM goals WHERE user_id = ? AND id = ? ";
+        //Use the connection
+        connection.query(sqlg, [req.params.id, req.params.goalid], (err, goal) => {
+            if(err)throw(err);
+//get priorities
+            var sqls = "SELECT id, goal_id, intervalset, intervals, priority, DATE_FORMAT(dueDate, '%d/%m/%Y') as dueDate, checked FROM priorities WHERE goal_id = ? ";
+            //Use the connection
+            connection.query(sqls, [req.params.goalid], (err, prior) => {
+                if(err)throw(err);
+//get distinct values
+            var sqls = "SELECT intervalset, intervals FROM priorities WHERE goal_id = ? GROUP BY intervalset, intervals";
+            //Use the connection
+            connection.query(sqls, [req.params.goalid], (err, dist) => {
+                if(err)throw(err);
+            connection.release();
+            if(!err){
+                res.render('goalplan/edit_goal',{ user, goal, prior, dist })
+            } else {
+                console.log(err);
+            }
+            console.log('The user data from: \n', user, goal);
+            });
+        });
+    });
+});
+});
+}
+
+//update goalplan
+exports.editgoal = (req, res) => {
+
+    var description = req.body.description;
+    var resources = req.body.resources;
+    var reward = req.body.reward;
+    //Connect to MySQL
+pool.getConnection((err, connection) => {
+    if(err) throw err; //not connected
+    console.log('Connected as ID ' + connection.threadId);
+//update goals
+    var sqlu = "UPDATE goals SET description = '"+description+"', resources = '"+resources+"', reward = '"+reward+"' WHERE id = ? "; 
+    //Use the connection
+    connection.query(sqlu, [req.params.goalid], (err, edit) => {
+        if(err)throw(err);
+//get user
+        var sqli = "SELECT * FROM user WHERE id = ? ";
+        //Use the connection
+        connection.query(sqli, [req.params.id], (err, user) => {
+        if(err)throw(err);
+//get goals
+        var sqlg = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward FROM goals WHERE user_id = ? AND id = ? ";
+        //Use the connection
+        connection.query(sqlg, [req.params.id, req.params.goalid], (err, goal) => {
+            if(err)throw(err);
+//get priorities
+            var sqls = "SELECT id, goal_id, intervalset, intervals, priority, DATE_FORMAT(dueDate, '%d/%m/%Y') as dueDate, checked FROM priorities WHERE goal_id = ? ";
+            //Use the connection
+            connection.query(sqls, [req.params.goalid], (err, prior) => {
+                if(err)throw(err);
+//get distinct values
+            var sqls = "SELECT intervalset, intervals FROM priorities WHERE goal_id = ? GROUP BY intervalset, intervals";
+            //Use the connection
+            connection.query(sqls, [req.params.goalid], (err, dist) => {
+                if(err)throw(err);
+            connection.release();
+            if(!err){
+                res.render('goalplan/overview',{ user, goal, prior, dist })
+            } else {
+                console.log(err);
+            }
+            console.log('The user data from: \n', user, goal);
+            });
+        });
+    });
+});
+});
+});
+}
+
+//update priorities
+exports.editprior = (req, res) => {
+    var priority = req.body.priority;
+    var dueDate = req.body.dueDate;
+    //Connect to MySQL
+pool.getConnection((err, connection) => {
+    if(err) throw err; //not connected
+    console.log('Connected as ID ' + connection.threadId);
+//update priority
+    var sqlu = "UPDATE priorities SET priority = '"+priority+"', dueDate = STR_TO_DATE('"+dueDate+"', '%d/%m/%Y') WHERE id = ? "; 
+    //Use the connection
+    connection.query(sqlu, [req.params.priorid], (err, edit) => {
+        if(err)throw(err);
+//get user
+        var sqli = "SELECT * FROM user WHERE id = ? ";
+        //Use the connection
+        connection.query(sqli, [req.params.id], (err, user) => {
+        if(err)throw(err);
+//get goals
+        var sqlg = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward FROM goals WHERE user_id = ? AND id = ? ";
+        //Use the connection
+        connection.query(sqlg, [req.params.id, req.params.goalid], (err, goal) => {
+            if(err)throw(err);
+//get priorities
+            var sqls = "SELECT id, goal_id, intervalset, intervals, priority, DATE_FORMAT(dueDate, '%d/%m/%Y') as dueDate, checked FROM priorities WHERE goal_id = ? ";
+            //Use the connection
+            connection.query(sqls, [req.params.goalid], (err, prior) => {
+                if(err)throw(err);
+//get distinct values
+            var sqls = "SELECT intervalset, intervals FROM priorities WHERE goal_id = ? GROUP BY intervalset, intervals";
+            //Use the connection
+            connection.query(sqls, [req.params.goalid], (err, dist) => {
+                if(err)throw(err);
+            connection.release();
+            if(!err){
+                res.render('goalplan/edit_goal',{ user, goal, prior, dist })
+            } else {
+                console.log(err);
+            }
+            console.log('The user data from: \n', user, goal);
+            });
+        });
+    });
+});
+});
+});
+}
+
+//new priorities
+exports.newprior = (req, res) => {
+    var goal_id = req.params.goalid;
+    var intervalset  = req.body.intervalset;
+    var intervals  = req.body.intervals;
+    var priority = req.body.priority;
+    var dueDate = req.body.dueDate;
+
+    //Connect to MySQL
+pool.getConnection((err, connection) => {
+    if(err) throw err; //not connected
+    console.log('Connected as ID ' + connection.threadId);
+//new priority
+var sql = "INSERT INTO priorities (goal_id, intervalset, intervals, priority, dueDate ) VALUES ('"+goal_id+"', '"+intervalset+"', '"+intervals+"', '"+priority+"', STR_TO_DATE('"+dueDate+"', '%d/%m/%Y'))"; 
+//Use the connection
+    connection.query(sql, [req.params.priorid], (err, edit) => {
+        if(err)throw(err);
+//get user
+        var sqli = "SELECT * FROM user WHERE id = ? ";
+        //Use the connection
+        connection.query(sqli, [req.params.id], (err, user) => {
+        if(err)throw(err);
+//get goals
+        var sqlg = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward FROM goals WHERE user_id = ? AND id = ? ";
+        //Use the connection
+        connection.query(sqlg, [req.params.id, req.params.goalid], (err, goal) => {
+            if(err)throw(err);
+//get priorities
+            var sqls = "SELECT id, goal_id, intervalset, intervals, priority, DATE_FORMAT(dueDate, '%d/%m/%Y') as dueDate, checked FROM priorities WHERE goal_id = ? ";
+            //Use the connection
+            connection.query(sqls, [req.params.goalid], (err, prior) => {
+                if(err)throw(err);
+//get distinct values
+            var sqlu = "SELECT intervalset, intervals FROM priorities WHERE goal_id = ? GROUP BY intervalset, intervals";
+            //Use the connection
+            connection.query(sqlu, [req.params.goalid], (err, dist) => {
+                if(err)throw(err);
+            connection.release();
+            if(!err){
+                res.render('goalplan/edit_goal',{ user, goal, prior, dist })
+            } else {
+                console.log(err);
+            }
+            console.log('The user data from: \n', user, goal);
+            });
         });
     });
 });

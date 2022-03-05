@@ -181,8 +181,6 @@ pool.getConnection((err, connection) => {
     var sqli = "UPDATE user SET name = '"+name+"', password = '"+pwdhash+"', email = '"+email+"' WHERE id = ? "; 
     //Use the connection
     connection.query(sqli, [req.params.id], (err, user) => {
-        //when done with the connection release it
-        
         var sql = "SELECT * FROM user where id = ?"; 
         //Use the connection
         connection.query(sql,[req.params.id], (err, user) => {
