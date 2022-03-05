@@ -1,0 +1,53 @@
+
+<%- include('../partials/header') %>
+
+    <% for (let i = 0; i < user.length; i++) { %>
+
+    <div class="container col-md-10">
+    <%- include('../partials/dropdown') %>
+        <div class="card border border-secondary rounded-3 my-4 shadow">
+            <div class="card-body mx-md-5">
+                <h2 class="card-title my-3 text-center">Profile</h2>
+                    <form action="/user/update/<%= user[i].id %>" method="POST" class="d-grid gap-2 mx-5" >
+                    <div class="form-group mt-3">
+                        <div class="mb-1 row">
+                        <label class="col-sm-2 col-form-label" for="username"><h6>Name</h6></label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" value="<%= user[i].name %>" id="username" name="username" required>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="mb-1 row">
+                        <label class="col-sm-2 col-form-label" for="email"><h6>Email</h6></label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="email" value="<%= user[i].email %>" id="email" name="email" placeholder="<%= user.email %>" required>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="mb-1 row">
+                        <label class="col-sm-2 col-form-label" for="password"><h6>Password</h6></label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input class="form-control" type="password" id="password" name="password" placeholder="Enter new password" required>
+                                    <span class="input-group-text"><i class="fas fa-eye-slash" id="eyes"></i></span>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class=" d-md-flex mt-5  mb-3 mx-auto">
+                        <span onclick="history.back()" class="btn btn-secondary rounded-pill px-3 mx-3" >Back</span>
+                        <button class="btn btn-primary rounded-pill px-3" type="submit">Save</button>
+                
+                    </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    <% } %>
+    
+<%- include('../partials/footer') %>
+

@@ -1,0 +1,61 @@
+body {
+  background: linear-gradient(to top right, #ffedcc 3%, #ffffff 77%);
+  font-family: 'Ubuntu', sans-serif;
+}
+
+@font-face {
+  font-family: Segoe Print;
+  src: url(/components/segoepr_0.ttf);
+}
+
+.btn{
+  max-width: 500px;
+}
+
+.quotes{
+    font-family: Segoe Print;
+}
+
+.ads i {
+  color: #eeb750;
+}
+
+.responsive {
+  width: 18%;
+  max-width: 400px;
+  height: auto;
+}
+
+.cardlinks a{ 
+  text-decoration: none;
+  font-size:18px;
+  color: #000000;
+}
+.cardlinks a:hover{
+  cursor: pointer;
+}
+
+.navlink{
+  color: #ffffff;
+  font-size:20px; 
+  text-decoration: none;
+}
+.navlink:hover{
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.login{
+ color: #ffffff;
+ background-color: #021130d0;
+}
+
+#eyes{
+  cursor: pointer;
+}
+
+.intprior{
+  border: 1px solid #0051ff49;
+  background-color: #504e4d18;
+}
+

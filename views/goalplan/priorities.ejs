@@ -1,0 +1,125 @@
+<%- include('../partials/header') %>
+<% for (let i = 0; i < user.length; i++) { %>
+    <% if(typeof message != "undefined" && message) { %>
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <strong> <%= message %> </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <% } %>
+    <div class="container col-md-10">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/user/<%= user[i].id %>">Home</a></li>
+              <li class="breadcrumb-item text-muted">New Goal</li>
+              <li class="breadcrumb-item active" aria-current="page">Add Priorities</li>
+            </ol>
+        </nav>
+        <% for (let i = 0; i < goal.length; i++) { %>
+        <div class="card border border-secondary rounded-3 mb-5  shadow">
+            <div class="card-body">
+                 <h2 class="my-3 text-center"><%= user[i].name %>'s <%= goal[i].category %> Goal</h2>
+                 <div  class="d-grid gap-2 mx-5">
+                     <div class="row mt-4">
+                        <h6 class="col-md-auto">Goal: </h6>
+                        <div class="col-md-auto"><%= goal[i].title %> </div>
+                     </div>
+
+                     <div class="row mb-3">
+                        <h6 class="col-md-auto">Duration: </h6>
+                        <div class="col-md-auto">Your goal plan starts from <b><%= goal[i].startDate%></b> and ends <b><%= goal[i].endDate %></b>,
+                         that is a total of <b><% if(goal[i].years == 1){ %> <%= goal[i].years %> year<% } else if(goal[i].years >= 1){ %> <%= goal[i].years %> years<% } %>
+                         <% if(goal[i].months == 1) { %>, <%= goal[i].months %> month<% }  else if(goal[i].months >= 1){ %>, <%= goal[i].months %> months<% } %>
+                         <% if(goal[i].days == 1){ %>, <%= goal[i].days %> day<% } else if(goal[i].days >= 1){ %>, <%= goal[i].days %> days<% } %></b>.
+                        </div>
+                     </div>
+                     
+                     <div class="intprior p-4 mb-3">
+                        <h5 class="my-2 text-center" id="intno">Intervals & Priorities</h5>
+                        <!--form-->
+                        <form action="/goals/priorities/<%= user[i].id %>/<%= goal[i].id %>" method="POST">
+                            <div class="form-group mb-4">
+                                <label for="category" class="form-label"><h6>Interval</h6></label>
+                                <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Break your priorities into intervals to help ease the process, a maximum of 5 is best." style="color:#0062CC"></i>
+                                <select class="form-select" id="intervals" name="intervals" required> 
+                                    <option value=" ">Select your goal intervals</option>
+                                    <option value="1 month" >1 month</option>
+                                    <option value="3 months" >3 months</option>
+                                    <option value="6 months" >6 months</option>
+                                    <option value="9 months" >9 months</option>
+                                    <option value="1 year" >1 year</option>
+                                    <option value="1 yr 6 months" >1 yr 6 months</option>
+                                    <option value="2 years" >2 years</option>
+                                    <option value="2 yrs 6 months" >2 yrs 6 months</option>
+                                    <option value="3 years" >3 years</option>
+                                    <option value="3 yrs 6 months" >3 yrs 6 months</option>
+                                    <option value="4 years" >4 years</option> 
+                                    <option value="4 yrs 6 months" >4 yrs 6 months</option>
+                                    <option value="5 years" >5 years</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="priorities" class="form-label"><h6>Priorities</h6></label>
+                                <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="List out your priorities in an ascending order" style="color:#0062CC"></i>
+                                <div class="row">
+                                    <div class="col-md-8 mb-4">
+                                        <input type="text" name="priority" id="priority" class="form-control" placeholder="Enter your priority" required>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <input class="form-control" type="text" data-format="dd/mm/yyyy" id="dueDate" name="dueDate" placeholder="Due Date" required/>
+                                    </div>
+                                    <div class="col-md-1 mx-0 " style="max-width: 90%;">
+                                        <button type="submit" class="btn btn-secondary rounded-pill" id="addprior"><i class='fas fa-plus'></i></button>
+                                    </div>
+                                </div>
+                            </div> 
+                            <input value="" name="intervalset" id="intset" type="hidden" />
+                        </form>
+                    </div>
+                    <% for (let i = 0; i < int.length; i++) { %>
+                        <input value="<%= int[i].intervals %>" id="hidint" type="hidden" />
+                        <input value="<%= int[i].intervalset %>" id="intsethead" type="hidden" />
+                    <% } %>
+                    
+                    <div>
+                        <div class=" p-4">
+                        <% 
+
+                       
+
+                        for (let i = 0; i < prior.length; i++) { %>
+                            <% int.forEach(int => { %>
+                                <% if (prior[i].intervals === int.intervals) { %>
+                                   
+                                <div class="p-2 d-flex justify-content-between ">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="check" name="check">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            <div><%= prior[i].priority %> </div> <!--<%= prior[i].intervals %>-->
+                                        </label>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <div><%= prior[i].dueDate %></div>
+                                        <% for (let i = 0; i < user.length; i++) { %>
+                                        <a href="/goals/priority/<%= user[i].id %>/<%= goal[i].id %>/<%= prior[i].id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                        <% } %>
+                                    </div>
+                                </div><hr>
+                                <% } %> 
+                            <% }) %>
+                        <% } %>
+                    </div>
+                    </div>
+    
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="/goals/priorities/<%= user[i].id %>/<%= goal[i].id %>" class="btn btn-secondary rounded-pill me-3" id="newint">New Interval</a>
+                        <a href="/goals/overview/<%= user[i].id %>/<%= goal[i].id %>" class="btn btn-primary rounded-pill">Save</a>
+                    </div>
+                 </div>
+                 <% }%>
+                <% } %>
+            </div>
+        </div>
+    </div> 
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,73 @@
+                 
+                        <nav class="d-none d-lg-block">
+                            <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+                                <button class="nav-link active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1" type="button" role="tab" aria-controls="nav-1" aria-selected="true">
+                                   <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 1') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </button>
+                                <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button" role="tab" aria-controls="nav-2" aria-selected="false">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 2') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </button>
+                                <button class="nav-link" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button" role="tab" aria-controls="nav-3" aria-selected="false">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 3') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </button>
+                                <button class="nav-link" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-4" type="button" role="tab" aria-controls="nav-4" aria-selected="false">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 4') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </button>
+                                <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button" role="tab" aria-controls="nav-5" aria-selected="false">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 5') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </button>
+                            </div>
+                        </nav>
+
+                            <ul class="nav nav-tabs d-sm-block d-lg-none">
+                            <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Intervals</a>
+                              <ul class="dropdown-menu" id="interval-menu">
+                                <li><a class="dropdown-item x" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1" type="button" role="tab">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 1') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </a></li>
+                                <li><a class="dropdown-item x" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button" role="tab">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 2') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </a></li>
+                                <li><a class="dropdown-item x" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button" role="tab">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 3') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </a></li>
+                                <li><a class="dropdown-item x" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-4" type="button" role="tab">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 4') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </a></li>
+                                <li><a class="dropdown-item x" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button" role="tab">
+                                    <% for (let i = 0; i < dist.length; i++) { %>
+                                        <% if (dist[i].intervalset === 'Interval 5') { %>
+                                        <%= dist[i].intervals  %>
+                                    <% }}%>
+                                </a></li>
+                              </ul>
+                            </li>
+                        </ul>

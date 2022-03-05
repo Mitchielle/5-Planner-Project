@@ -1,0 +1,13 @@
+<% user.forEach(user => { %>
+  <nav class="navbar navbar-expand-lg navbar-light py-0 px-xl-5 bg-secondary " >
+    <div class="container-fluid d-flex flex-nowrap">
+        <a class="" href="/user/<%= user.id %>">
+            <img src="/component/5logo.png" alt="" class="responsive" >
+        </a>
+        <a href="/user/logout/<%= user.id %>" class="navlink d-flex flex-row">
+            <div class="/user/ ">Logout</div> 
+            <div class="ms-2"><i class='fas'>&#xf2f5;</i></div>
+        </a> 
+    </div>
+  </nav>
+  <% }) %>

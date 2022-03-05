@@ -1,0 +1,209 @@
+<%- include('../partials/header') %>
+<% for (let i = 0; i < user.length; i++) { %>
+    <% if(typeof message != "undefined" && message) { %>
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <strong> <%= message %> </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <% } %>
+    <div class="container col-md-10">
+        <%- include('../partials/dropdown') %>
+        <% for (let i = 0; i < goal.length; i++) { %>
+        <div class="card border border-secondary rounded-3 m-3  shadow">
+            <div class="card-body">
+                 <h2 class="my-3 text-center"><%= user[i].name %>'s <%= goal[i].category %> Goal</h2>
+                 <div  class="d-grid gap-2 mx-md-5">
+                     <div class="mt-4 mb-3 row">
+                        <h6 class="col-md-2">Goal: </h6>
+                        <div class="col-md-10"><%= goal[i].title %> </div>
+                     </div>
+
+                     <div class="mb-3 row">
+                        <h6 class="col-md-2">Duration: </h6>
+                        <div class="col-md-10"> 
+                            <%= goal[i].startDate%> -to- <%= goal[i].endDate %>
+                        </div>
+                     </div>
+
+                     <div class="mb-3 row">
+                        <h6 class="col-md-2">Description: </h6>
+                        <div class="col-md-10">
+                            <%= goal[i].description%>
+                        </div>
+                     </div>
+
+                     <div class="mb-3 row">
+                        <h6 class="col-md-2">Resources: </h6>
+                        <div class="col-md-10">
+                            <%= goal[i].resources%>
+                        </div>
+                     </div>
+
+                     <div class="mb-3 row">
+                        <h6 class="col-md-2">Reward: </h6>
+                        <div class="col-md-10">
+                            <%= goal[i].reward%>
+                        </div>
+                     </div>
+                     <!--Priorites-->
+                     <div class="row mb-3">
+                        <%- include('../partials/_priorities') %>
+            
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
+                            <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                <% if(dist != 0) {  dist.forEach(dist => {%>
+                                    <% if (dist.intervalset === 'Interval 1') { %>
+                                    <%= dist.intervals  %>
+                                    <% }})}%>
+                            </h6>
+                            <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 1') { %>
+                                <div class="p-2 row d-flex justify-content-between ">
+                                    <div class="form-check col-md-auto">
+                                        <% if (prior.checked === 'true') { %>
+                                            <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
+                                        <% } else { %>
+                                            <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
+                                        <% } %>
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            <div><%= prior.priority %></div>
+                                        </label>
+                                    </div>
+                                    <div class="d-flex justify-content-end col-md-auto">
+                                        <div><%= prior.dueDate %></div>
+                                        <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                        <%  %>
+                                    </div>
+                                </div><hr>
+                                <% }})}%> 
+                            </div>
+                            
+                            <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 2') { %>
+                                        <%= dist.intervals  %>
+                                    <% }})}%>
+                                </h6>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset == 'Interval 2') { %>
+                                    <div class="p-2 row d-flex justify-content-between ">
+                                        <div class="form-check col-md-auto">
+                                            <% if (prior.checked === 'true') { %>
+                                                <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
+                                            <% } else { %>
+                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
+                                            <% } %>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                <div><%= prior.priority %> </div>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-auto d-flex justify-content-end">
+                                            <div><%= prior.dueDate %></div>
+                                            
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                            
+                                        </div>
+                                    </div><hr>
+                                <% }})}%>
+                            </div>
+                            <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav3-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3"> 
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 3') { %>
+                                        <%= dist.intervals  %>
+                                    <% }})}%>
+                                </h6>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 3') { %>
+                                    <div class="p-2 row d-flex justify-content-between ">
+                                        <div class="form-check col-md-auto">
+                                            <% if (prior.checked === 'true') { %>
+                                            <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
+                                            <% } else { %>
+                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
+                                            <% } %>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                <div><%= prior.priority %></div> 
+                                            </label>
+                                        </div>
+                                        <div class="col-md-auto d-flex justify-content-end">
+                                            <div><%= prior.dueDate %></div>
+                                           
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                            
+                                        </div>
+                                    </div><hr>
+                                <% }})}%>
+                            </div>
+                            <div class="tab-pane fade" id="nav-4" role="tabpanel" aria-labelledby="nav-4-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 4') { %>
+                                        <%= dist.intervals  %>
+                                    <% }})}%>
+                                </h6>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 4') { %>
+                                    <div class="p-2 row d-flex justify-content-between ">
+                                        <div class="form-check col-md-auto">
+                                            <% if (prior.checked === 'true') { %>
+                                                <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
+                                            <% } else { %>
+                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
+                                            <% } %>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                <div><%= prior.priority %> </div>
+                                            </label>
+                                        </div>
+                                        <div class="d-flex col-md-auto justify-content-end">
+                                            <div><%= prior.dueDate %></div>
+                                           
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                        
+                                        </div>
+                                    </div><hr>
+                                <% }})}%> 
+                            </div>
+                            <div class="tab-pane fade" id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab">
+                                <h6 class="d-sm-block d-lg-none d-flex justify-content-center my-3">
+                                    <% if(dist != 0) {  dist.forEach(dist => {%>
+                                        <% if (dist.intervalset === 'Interval 5') { %>
+                                        <%= dist.intervals  %>
+                                    <% }})}%>
+                                </h6>
+                                <% if(prior != 0) {  prior.forEach(prior => {%>
+                                <% if (prior.intervalset === 'Interval 5') { %>
+                                    <div class="p-2 row d-flex justify-content-between ">
+                                        <div class="form-check col-md-auto">
+                                            <% if (prior.checked === 'true') { %>
+                                                <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
+                                            <% } else { %>
+                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
+                                            <% } %>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                <div><%= prior.priority %> </div>
+                                            </label>
+                                        </div>
+                                        <div class="d-flex justify-content-end col-md-auto">
+                                            <div><%= prior.dueDate %></div>
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+ 
+                                        </div>
+                                    </div><hr>
+                                <% }})}%>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="d-flex justify-content-end mb-3">
+                   
+                    <a onclick="window.print()" class="btn btn-secondary rounded-pill me-3 d-none d-lg-block" >Print</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <% } %>
+    <%- include('../partials/footer') %>

@@ -1,0 +1,16 @@
+
+        <% for (let i = 0; i < goal.length; i++) { %>
+            <% for (let i = 0; i < prior.length; i++) { %>
+                <% if (prior[i].intervalset === 'Interval 2') { %>
+                    <%= prior[i].intervals %>
+                    
+                   
+            <form action="" method="POST" id="checkform">
+                <input class="form-check-input" type="checkbox" value="<%= prior[i].checked %>" id="checked" name="checked">
+                <% for (let i = 0; i < user.length; i++) { %>
+                <button type="submit" formaction="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior[i].id %>"><i class='fas fa-plus'></i></button>
+            </form>
+    <% }} %>
+    <% }} %>
+
+  
