@@ -79,3 +79,11 @@ $('#intset').val(y)
 
 
 
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+  history.go(1);
+};
+
+$(window).on('popstate', function(event) {
+  alert("pop");
+ });

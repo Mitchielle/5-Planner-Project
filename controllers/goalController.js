@@ -56,7 +56,6 @@ exports.create = (req, res) => {
         //insert goal
         connection.query(sql, (err, goal) => {
             //when done with the connection release it
-            connection.release();
 
             var sqlg = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
             " DATE_FORMAT( endDate,  '%Y' ) - DATE_FORMAT( startDate,  '%Y' ) as years,"+
@@ -74,8 +73,15 @@ exports.create = (req, res) => {
                 connection.release();
                 if(err)throw(err);
 
+         //get intervalset
+        var sqlt = "SELECT intervalset FROM priorities WHERE goal_id = ? AND id = (SELECT LAST_INSERT_ID())";
+        //Use the connection
+        connection.query(sqlt, [req.params.goalid], (err, int) => {
+        //when done with the connection release it
+        if(err)throw(err);
+
                 if(!err){
-                    res.render('goalplan/priorities', {user, goal, prior});
+                    res.render('goalplan/priorities', {user, goal, prior, int});
                 } else {
                     console.log(err);
                 }
@@ -84,8 +90,10 @@ exports.create = (req, res) => {
             });
             });
         });
-    });
+
+    });    });
 }
+
 
 
 
@@ -330,57 +338,7 @@ exports.track = (req, res) => {
 
 }
 
-//delete priority
-exports.priority = (req, res) => {
-    //Connect to MySQL
-    pool.getConnection((err, connection) => {
-        if(err) throw err; //not connected
-        console.log('Connected as ID ' + connection.threadId);
-        //delete priority
-        var sql = "DELETE FROM priorities WHERE id = ? ";
-    //Use the connection
-    connection.query(sql, [req.params.priorid], (err, remove) => {
-        if(err)throw(err);
-//get user
-        var sqli = "SELECT * FROM user WHERE id = ? ";
-        //Use the connection
-        connection.query(sqli, [req.params.id], (err, user) => {
-        if(err)throw(err);
-//get goals
-        var sqlg = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
-        " DATE_FORMAT( endDate,  '%Y' ) - DATE_FORMAT( startDate,  '%Y' ) as years,"+
-        " DATE_FORMAT( endDate,  '%m' ) - DATE_FORMAT( startDate,  '%m' ) as months,"+
-        " DATE_FORMAT( endDate,  '%d' ) - DATE_FORMAT( startDate,  '%d' ) as days"+
-        " FROM goals WHERE user_id = ? AND id = ? ";
-        //Use the connection
-        connection.query(sqlg, [req.params.id, req.params.goalid], (err, goal) => {
-            if(err)throw(err);
-//get priorities
-        var sqls = "SELECT id, goal_id, intervalset, intervals, priority, DATE_FORMAT(dueDate, '%d/%m/%Y') as dueDate FROM priorities WHERE goal_id = ? ";
-        //Use the connection
-        connection.query(sqls, [req.params.goalid], (err, prior) => {
-            if(err)throw(err);
-//get intervals
-        var sqlt = "SELECT intervalset, intervals FROM priorities WHERE goal_id = ? AND id = (SELECT LAST_INSERT_ID())";
-        //Use the connection
-        connection.query(sqlt, [req.params.goalid], (err, int) => {
-        //when done with the connection release it
-        if(err)throw(err);
-        //when done with the connection release it
-        connection.release();
-        if(!err){
-            res.render('goalplan/priorities',{ user, goal, prior, int, message: "Priority successfully deleted." })
-        } else {
-            console.log(err);
-        }
-        console.log('The priority has been deleted');
-        });
-        });
-    });
-    });
-});
-});
-}
+
 //delete priority from overview
 exports.delprior = (req, res) => {
     //Connect to MySQL
@@ -404,7 +362,7 @@ exports.delprior = (req, res) => {
         connection.query(sqlg, [req.params.id, req.params.goalid], (err, goal) => {
             if(err)throw(err);
 //get priorities
-            var sqls = "SELECT id, goal_id, intervalset, intervals, priority, DATE_FORMAT(dueDate, '%d/%m/%Y') as dueDate FROM priorities WHERE goal_id = ? ";
+            var sqls = "SELECT id, goal_id, intervalset, intervals, priority, DATE_FORMAT(dueDate, '%d/%m/%Y') as dueDate, checked FROM priorities WHERE goal_id = ? ";
             //Use the connection
             connection.query(sqls, [req.params.goalid], (err, prior) => {
                 if(err)throw(err);

@@ -27,9 +27,6 @@ router.get('/uncheck/:id/:goalid/:priorid', goalController.uncheck)
 //progress
 router.get('/progress', goalController.track)
 
-//delete priority
-router.get('/priority/:id/:goalid/:priorid', goalController.priority)
-
 //delete priority from overview
 router.get('/delprior/:id/:goalid/:priorid', goalController.delprior)
 

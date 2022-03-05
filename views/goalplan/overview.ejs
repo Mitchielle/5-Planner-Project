@@ -59,20 +59,22 @@
                             </h6>
                             <% if(prior != 0) {  prior.forEach(prior => {%>
                                 <% if (prior.intervalset === 'Interval 1') { %>
-                                <div class="p-2 row d-flex justify-content-between ">
-                                    <div class="form-check col-md-auto">
-                                        <% if (prior.checked === 'true') { %>
-                                            <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
-                                        <% } else { %>
-                                            <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
-                                        <% } %>
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            <div><%= prior.priority %></div>
-                                        </label>
+                                <div class=" row mx-1">
+                                    <div class="col-10 ">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <% if (prior.checked === 'true') { %>
+                                                    <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-check-square'></i></a>
+                                                <% } else { %>
+                                                    <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-square'></i></a>
+                                                <% } %>
+                                            </div>
+                                            <div class="col-11"><%= prior.priority %></div>
+                                        </div>
                                     </div>
-                                    <div class="d-flex justify-content-end col-md-auto">
+                                    <div class="d-flex justify-content-end col-2">
                                         <div><%= prior.dueDate %></div>
-                                        <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                        <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" class="d-none d-lg-block"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
                                         <%  %>
                                     </div>
                                 </div><hr>
@@ -88,22 +90,23 @@
                                 </h6>
                                 <% if(prior != 0) {  prior.forEach(prior => {%>
                                 <% if (prior.intervalset == 'Interval 2') { %>
-                                    <div class="p-2 row d-flex justify-content-between ">
-                                        <div class="form-check col-md-auto">
-                                            <% if (prior.checked === 'true') { %>
-                                                <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
-                                            <% } else { %>
-                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
-                                            <% } %>
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                <div><%= prior.priority %> </div>
-                                            </label>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <% if (prior.checked === 'true') { %>
+                                                        <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-check-square'></i></a>
+                                                    <% } else { %>
+                                                        <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-square'></i></a>
+                                                    <% } %>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-auto d-flex justify-content-end">
+                                        <div class="d-flex justify-content-end col-2">
                                             <div><%= prior.dueDate %></div>
-                                            
-                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
-                                            
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" class="d-none d-lg-block"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                            <%  %>
                                         </div>
                                     </div><hr>
                                 <% }})}%>
@@ -117,22 +120,23 @@
                                 </h6>
                                 <% if(prior != 0) {  prior.forEach(prior => {%>
                                 <% if (prior.intervalset === 'Interval 3') { %>
-                                    <div class="p-2 row d-flex justify-content-between ">
-                                        <div class="form-check col-md-auto">
-                                            <% if (prior.checked === 'true') { %>
-                                            <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
-                                            <% } else { %>
-                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
-                                            <% } %>
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                <div><%= prior.priority %></div> 
-                                            </label>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <% if (prior.checked === 'true') { %>
+                                                        <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-check-square'></i></a>
+                                                    <% } else { %>
+                                                        <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-square'></i></a>
+                                                    <% } %>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-auto d-flex justify-content-end">
+                                        <div class="d-flex justify-content-end col-2">
                                             <div><%= prior.dueDate %></div>
-                                           
-                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
-                                            
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" class="d-none d-lg-block"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                            <%  %>
                                         </div>
                                     </div><hr>
                                 <% }})}%>
@@ -146,22 +150,23 @@
                                 </h6>
                                 <% if(prior != 0) {  prior.forEach(prior => {%>
                                 <% if (prior.intervalset === 'Interval 4') { %>
-                                    <div class="p-2 row d-flex justify-content-between ">
-                                        <div class="form-check col-md-auto">
-                                            <% if (prior.checked === 'true') { %>
-                                                <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
-                                            <% } else { %>
-                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
-                                            <% } %>
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                <div><%= prior.priority %> </div>
-                                            </label>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <% if (prior.checked === 'true') { %>
+                                                        <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-check-square'></i></a>
+                                                    <% } else { %>
+                                                        <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-square'></i></a>
+                                                    <% } %>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>
+                                            </div>
                                         </div>
-                                        <div class="d-flex col-md-auto justify-content-end">
+                                        <div class="d-flex justify-content-end col-2">
                                             <div><%= prior.dueDate %></div>
-                                           
-                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
-                                        
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" class="d-none d-lg-block"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                            <%  %>
                                         </div>
                                     </div><hr>
                                 <% }})}%> 
@@ -175,21 +180,23 @@
                                 </h6>
                                 <% if(prior != 0) {  prior.forEach(prior => {%>
                                 <% if (prior.intervalset === 'Interval 5') { %>
-                                    <div class="p-2 row d-flex justify-content-between ">
-                                        <div class="form-check col-md-auto">
-                                            <% if (prior.checked === 'true') { %>
-                                                <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-check-square'></i></a>
-                                            <% } else { %>
-                                                <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" class="me-2"><i class='far fa-square'></i></a>
-                                            <% } %>
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                <div><%= prior.priority %> </div>
-                                            </label>
+                                    <div class=" row mx-1">
+                                        <div class="col-10 ">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <% if (prior.checked === 'true') { %>
+                                                        <a href="/goals/uncheck/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-check-square'></i></a>
+                                                    <% } else { %>
+                                                        <a href="/goals/checked/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" id="checker" ><i class='far fa-square'></i></a>
+                                                    <% } %>
+                                                </div>
+                                                <div class="col-11"><%= prior.priority %></div>
+                                            </div>
                                         </div>
-                                        <div class="d-flex justify-content-end col-md-auto">
+                                        <div class="d-flex justify-content-end col-2">
                                             <div><%= prior.dueDate %></div>
-                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
- 
+                                            <a href="/goals/delprior/<%= user[i].id %>/<%= goal[i].id %>/<%= prior.id %>" class="d-none d-lg-block"><div class="text-danger ms-3" id="delete"><i class='fas fa-window-close'></i></div></a>
+                                            <%  %>
                                         </div>
                                     </div><hr>
                                 <% }})}%>
@@ -198,7 +205,7 @@
                      </div>
                 </div>
                 <div class="d-flex justify-content-end mb-3">
-                   
+                    <a href="/user/<%= user[i].id %>" class="btn btn-secondary rounded-pill px-3 mx-3 d-none d-lg-block" >Done</a>
                     <a onclick="window.print()" class="btn btn-secondary rounded-pill me-3 d-none d-lg-block" >Print</a>
                 </div>
             </div>
