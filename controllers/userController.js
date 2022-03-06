@@ -87,7 +87,7 @@ pool.getConnection((err, connection) => {
     });
 }
 
-
+//view homepage
 exports.view = (req, res) => {
     //Connect to MySQL
     pool.getConnection((err, connection) => {
@@ -101,17 +101,22 @@ exports.view = (req, res) => {
         var sql = "SELECT * FROM goals WHERE user_id = ? "; 
         //Use the connection
         connection.query(sql, [req.params.id] , (err, goal) => {
-            //when done with the connection release it
-            connection.release();
+            if(err)throw(err);
+        var sqlc = "SELECT goal_id FROM complete WHERE user_id = ? ";
+            //Use the connection
+            connection.query(sqlc, [req.params.id], (err, done) => {
+                //when done with the connection release it
+                connection.release();
 
             if(!err){
-                res.render('goalplan/index',{ user, goal })
+                res.render('goalplan/index',{ user, goal, done })
             } else {
                 console.log(err);
             }
-            console.log('The user data from: \n', user, goal);
+            console.log('The user data from: \n', user, goal, done);
         });
     });
+});
 });
 
 }

@@ -387,6 +387,8 @@ connection.release();
 });
 }
 
+
+//delete goal
 exports.delgoal = (req, res) => {
     //Connect to MySQL
     pool.getConnection((err, connection) => {
@@ -615,6 +617,54 @@ var sql = "INSERT INTO priorities (goal_id, intervalset, intervals, priority, du
             });
         });
     });
+});
+});
+});
+}
+
+//complete
+exports.complete = (req, res) => {
+
+    var goal_id = req.params.goalid
+
+    //Connect to MySQL
+    pool.getConnection((err, connection) => {
+        if(err) throw err; //not connected
+        console.log('Connected as ID ' + connection.threadId);
+        var sqli = "SELECT * FROM user WHERE id = ? ";
+    //Use the connection
+    connection.query(sqli, [req.params.id], (err, user) => {
+        if(err)throw(err);
+        var sqls = "SELECT * FROM goals WHERE user_id = ? "; 
+        //Use the connection
+        connection.query(sqls, [req.params.id] , (err, goal) => {
+            if(err)throw(err);
+        var sql = "SELECT * FROM complete WHERE goal_id = ? ";
+        //Use the connection
+        connection.query(sql, [req.params.goalid], (err, done) => {
+            //when done with the connection release it
+            //insert complete
+    var sqlr = "SELECT goal_id FROM complete where goal_id = ?";
+    connection.query(sqlr, [req.params.goalid], (err, result) => {
+        if (err){
+            console.log(err);
+        } else if(result.length > 0){
+          res.render('goalplan/index',{ user, goal, done });
+        } else {
+    var sqlc = "INSERT INTO complete (goal_id) VALUES ('"+goal_id+"')";
+    //Use the connection
+    connection.query(sqlc, (err, complete) => {
+    if(err)throw(err);
+            connection.release();
+            if(!err){
+                res.render('goalplan/index',{ user, goal, done })
+            } else {
+                console.log(err);
+            }
+            console.log('The user data from: \n', user, goal);
+        });
+    }});
+});
 });
 });
 });

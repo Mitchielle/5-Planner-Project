@@ -308,7 +308,9 @@
                 </div>
                 <div class="d-flex justify-content-end mb-3">
                     <a href="/goals/overview/<%= user[i].id %>/<%= goal[i].id %>" class="btn btn-secondary rounded-pill px-3 d-none d-lg-block" >Done</a>
-                    <a href="/goals/complete/<%= user[i].id %>/<%= goal[i].id %>" class="btn btn-secondary rounded-pill px-3 mx-3 d-none d-lg-block" >Completed</a>
+                    <button type="button" class="btn btn-secondary rounded-pill px-3 ms-2 d-none d-lg-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                       Achieved</button>
+                       <%- include('../partials/_complete') %>
                 </div>
             </div>
         </div>
