@@ -1,5 +1,1 @@
-CREATE TABLE `5planner`.`user` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `password` VARCHAR(255) COLLATE utf8mb4_bin NOT NULL , `created` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
-CREATE TABLE `5planner`.`goals` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` INT(11) NOT NULL , `category` VARCHAR(255) NOT NULL , `title` VARCHAR(255) NOT NULL , `startDate` DATE NOT NULL , `endDate` DATE NOT NULL , `description` VARCHAR(255) NOT NULL , `resources` VARCHAR(255) NOT NULL , `reward` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-
-CREATE TABLE `5planner`.`priorities` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `goal_id` INT(11) NOT NULL , `intervals` VARCHAR(255) NOT NULL, `period` VARCHAR(255) NOT NULL , `priority` VARCHAR(255) NOT NULL , `dueDate` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

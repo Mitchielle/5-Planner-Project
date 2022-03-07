@@ -332,10 +332,38 @@ exports.uncheck = (req, res) => {
 
 //progress
 exports.track = (req, res) => {
-    
-    
-    res.render('goalplan/progress')
-
+  //Connect to MySQL
+  pool.getConnection((err, connection) => {
+    if(err) throw err; //not connected
+    console.log('Connected as ID ' + connection.threadId);
+//get user
+    var sqli = "SELECT * FROM user WHERE id = ? ";
+    //Use the connection
+    connection.query(sqli, [req.params.id], (err, user) => {
+    if(err)throw(err);
+//get goals
+var sqlg = "SELECT *, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate,"+
+"   DATEDIFF(endDate, startDate) as Ttime, DATEDIFF(endDate, CURDATE()) as Tleft,  "+
+"p.id, p.goal_id, COUNT(*) as tprior, COUNT(IF(checked = 'true', 1, NULL)) 'tick', COUNT(IF(checked = '', 1, NULL)) 'notick', COUNT(DISTINCT(intervalset)) as intset FROM goals as g JOIN priorities as p ON g.id=p.goal_id WHERE user_id = ? GROUP BY  g.id";
+//Use the connection
+connection.query(sqlg, [req.params.id], (err, goal) => {
+    if(err)throw(err);
+//get completed
+        var sqls = "SELECT c.id, g.id, COUNT (c.id) as comp, COUNT (g.id) as tgoal, COUNT (g.id) - COUNT (c.id) as gleft FROM complete as c RIGHT JOIN goals as g ON g.id=c.goal_id ORDER BY g.id";
+        //Use the connection
+        connection.query(sqls, (err, done) => {
+            if(err)throw(err);
+        connection.release();
+        if(!err){
+            res.render('goalplan/progress',{ user, goal, done})
+        } else {
+            console.log(err);
+        }
+        console.log('The user data from: \n', user, goal, done);
+        });
+    });
+});
+});
 }
 
 

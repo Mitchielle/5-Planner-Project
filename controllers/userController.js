@@ -62,7 +62,10 @@ exports.access = (req, res) => {
 pool.getConnection((err, connection) => {
     if(err) throw err; //not connected
     console.log('Connected as ID ' + connection.threadId);
-    
+
+    var sqlc = "SELECT goal_id FROM complete WHERE user_id = ? ";
+    //Use the connection
+    connection.query(sqlc, [req.params.id], (err, done) => {
     var sql = "SELECT * FROM user WHERE email = ? ";
     //Use the connection
     connection.query(sql, [email], (err, user) => {
@@ -79,12 +82,14 @@ pool.getConnection((err, connection) => {
             var sqli = "SELECT * FROM goals WHERE user_id = ? ";
             connection.query(sqli, [user[0].id], (err, goal) => {
                 if(err)throw(err);
-            res.render('goalplan/index', {user, goal});
+                
+            res.render('goalplan/index', {user, goal, done});
             })
         }
         console.log('The user data from: \n', user);
         });
     });
+});
 }
 
 //view homepage

@@ -1,10 +1,60 @@
+<%- include('../partials/header') %>
+<% for (let i = 0; i < user.length; i++) { %>
+        <div class="container col-md-10">
+            <%- include('../partials/dropdown') %>
+            <% if(goal != 0) { %>
+                <div class="card border border-secondary rounded-3 my-4 shadow">
+                    <div class="card-body mx-3 my-3">
+                        <h2 class="card-title mb-5 mt-3 text-center">Progress</h2>
+                        <div class="d-flex justify-content-between mt-2 mx-4">
+                            <% for (let i = 0; i < done.length; i++) { %>
+                            <h5>Total goal plans <p class="text-center mt-3 tgoal" ><%= done[i].tgoal %></p></h5> </h5>
+                            <h5>Completed goal plans<p class="text-center mt-3 comp" ><%= done[i].comp %></p></h5>
+                            <h5>Ongoing goal plans: <p class="text-center mt-3 comp" ><%= done[i].gleft %></p></h5>
+                            <% } %>
+                        </div>
+                    </div> 
+                </div> 
+                <% for (let i = 0; i < goal.length; i++) { %>
+                <div class="mt-5 mb-3 mx-5">
+                    <div class="mb-3">
+                        <h4><%= goal[i].title %></h4>
+                        <h6 class="mb-3 text-muted"> Personal plan</h6>
+                    </div>
+                    <div class="mb-4">
+                        <p><%= goal[i].startDate %> - <%= goal[i].endDate %>
+                        </p>
+                    </div>
+                    <div class="pt-3">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Total priorities: <%= goal[i].tprior %> </h6>
+                            <h6>Priorities done: <%= goal[i].tick %> </h6> </h6>
+                            <h6>Priorities undone: <%= goal[i].notick %></h6>
+                        </div>
+                        <div class="d-flex justify-content-between my-3">
+                            <h6>Number of Intervals: <%= goal[i].intset %></h6>
+                            <h6>Total time: <%= goal[i].Ttime %> days</h6>
+                            <h6>Time left: <%= goal[i].Tleft %> days</h6>
+                        </div>
+                    </div>
+                </div><hr> 
+                <% }%>
+                <% } else { %>
+                 <div class="card border border-secondary rounded-3 mt-4 shadow">
+                     <div class="card-body mx-2">
+                         <h4 class="card-title mt-2" >
+                           <div class="text-center">Progress</div></h4>
+                         <div class="card-body mb-3 text-center my-5">
+                             You have no goal plans to track. Click on <i class='fas fa-plus text-primary'></i> <a href="/goals/new/<%= user[i].id %>" class="addgoal" > Add Goal </a> to begin
+                         </div>
+                     </div>  
+                 </div> 
+               <% } %>
+                <div class="d-flex justify-content-end my-4  mx-auto">
+                    <a href="/user/<%= user[i].id %>" class="btn btn-primary rounded-pill px-3 mx-3" >Back</a>
+                </div>
+            </div>
 
-<ul class="list-group">
-    <li class="list-group-item">
-      <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-      First checkbox
-    </li>
-
-
-
+ <% } %> 
+    <%- include('../partials/footer') %>
     
