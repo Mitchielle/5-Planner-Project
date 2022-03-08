@@ -11,6 +11,7 @@ require('dotenv').config()
 
 //Templating Engine
 app.set('view engine', 'ejs')
+app.set('views', __dirname + '/views');
 
 //Parsing middleware
 app.use(bodyParser.urlencoded({extended: false }))
