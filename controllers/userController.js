@@ -1,5 +1,6 @@
 const mysql = require('mysql')
 const crypto = require('crypto');
+const nodemailer = require('nodemailer')
 
 //Create connection
 const pool = mysql.createPool({
@@ -9,6 +10,18 @@ const pool = mysql.createPool({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME
 });
+
+//transporter
+var transport = nodemailer.createTransport({
+    host: 'smtp-mail.outlook.com',
+    port: 587,
+    
+    auth: {
+      user: "osubor63@hotmail.com",
+      pass: "65Million"
+    }
+  });
+
 
 //post register
 exports.create = (req, res) => {
@@ -21,7 +34,17 @@ exports.create = (req, res) => {
     var hash = crypto.createHash('sha256');
     var pwd = hash.update(password, 'utf-8')
     var pwdhash = pwd.digest('hex');
-
+// mail '1867b39b6a-093ede+1@inbox.mailtrap.io'
+   var mailOptions = {
+        from:  'osubor63@hotmail.com',
+        to: ""+email+"",
+        subject: "No-Reply: Welcome to FIVE Planner",
+        html: "<h1>Hello "+name+", </h1> "+
+                "<p class='mt-5'>Welcome to FIVE Planneryour goal acheiving aid, you have made the right choice.</p> "+
+                "<p class='my-5'><img src='/component/5logo.png' alt='' ></p> "+
+                 "<p class='mt-5'>visit the website <a>FIVE Planner</a> to create your goal plans and start your journey to success.</p>"
+    }
+    
 pool.getConnection((err, connection) => {
     if(err) throw err; //not connected
     console.log('Connected as ID ' + connection.threadId);
@@ -40,10 +63,15 @@ pool.getConnection((err, connection) => {
         connection.release();
 
         if(!err){
-            return res.render('validate/login', {alert: "Congratulations!! This was an important decision, many more to come!" });
+            res.render('validate/login', {alert: "Congratulations!! This was an important decision, many more to come!" });
+            // send email
+            transport.sendMail(mailOptions, (err, info) => {
+                if (err) throw(err) 
+                console.log('Message sent');   
+            });
         } else {
-            console.log(err);
-        }
+                console.log(err);
+            }
         console.log('The user data from: \n', user);
     });
 }});  

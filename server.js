@@ -34,9 +34,6 @@ app.use(session({
 //static files
 app.use(express.static('public'))
 
-
-
-
 //mysql apostrophe
 app.use(mysqlApostrophe);
 
@@ -55,6 +52,7 @@ pool.getConnection((err, connection) => {
     console.log('Connected as ID ' + connection.threadId);
 });
 
+
 //importing routes
 const goalroutes = require('./routes/goal')
 const routes = require('./routes/user')
@@ -66,9 +64,6 @@ app.use('/', startroutes)
 app.use('/goals', goalroutes)
 app.use('/user', routes)
 
-app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "build", "login.ejs"));
-  });
 
 
 app.listen(PORT, () => {
