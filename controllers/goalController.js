@@ -13,13 +13,13 @@ const pool = mysql.createPool({
 
 //transporter
 var transport = nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-      user: "de7d45e19d4662",
-      pass: "f27d54f42d0e61"
-    }
+    host: 'smtp-mail.outlook.com',
+    port: 587,
     
+    auth: {
+      user: "fiveplanner@hotmail.com",
+      pass: "12345#goals"
+    }
     
   });
 
@@ -97,7 +97,7 @@ exports.create = (req, res) => {
                 if(!err){
                     res.render('goalplan/priorities', {user, goal, prior, int});
                     var mailOptions = {
-                        from:  '1867b39b6a-093ede+1@inbox.mailtrap.io',
+                        from:  'fiveplanner@hotmail.com',
                         to: ""+user[0].email+"",
                         subject: "FIVE Planner: New Goal Plan",
                         html: "<p class='my-5'><img style='width:80px;' src='cid:unique@cid' alt='' ></p> "+
@@ -201,7 +201,7 @@ exports.addpriorities = (req, res) => {
         connection.query(sqlg, [req.params.id, req.params.goalid], (err, goal) => {
             if(err)throw(err);
 //insert priorities
-            var sql = "INSERT INTO priorities (goal_id, intervalset, intervals, priority, dueDate ) VALUES ('"+goal_id+"', '"+intervalset+"', '"+intervals+"', '"+priority+"', STR_TO_DATE('"+dueDate+"', '%d/%m/%Y'))"; 
+            var sql = "INSERT INTO priorities (goal_id, intervalset, intervals, priority, dueDate, checked ) VALUES ('"+goal_id+"', '"+intervalset+"', '"+intervals+"', '"+priority+"', STR_TO_DATE('"+dueDate+"', '%d/%m/%Y'), '')"; 
             //Use the connection
             connection.query(sql, (err, priorities) => {
                 if(err)throw(err);
@@ -263,7 +263,7 @@ exports.goalplan = (req, res) => {
                 if(!err){
                     res.render('goalplan/overview',{ user, goal, prior, dist })
                         var mailOptions = {
-                            from:  '1867b39b6a-093ede+1@inbox.mailtrap.io',
+                            from:  'fiveplanner@hotmail.com',
                             to: ""+user[0].email+"",
                             subject: "FIVE Planner: Goal Plan Reminder",
                             html: "<p class='my-5'><img style='width:80px;' src='cid:unique@cid' alt='' ></p> "+
@@ -281,7 +281,7 @@ exports.goalplan = (req, res) => {
                                     }
                                 ]
                         }
-                             // send email
+                             // send email every Saturday at 7am 
                              cron.schedule('0 7 * * SAT',() => {
                                 transport.sendMail(mailOptions, (err, info) => {
                                     if (err) throw(err) 
