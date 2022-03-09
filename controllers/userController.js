@@ -17,9 +17,10 @@ var transport = nodemailer.createTransport({
     port: 587,
     
     auth: {
-      user: "osubor63@hotmail.com",
-      pass: "65Million"
+      user: "fiveplanner@hotmail.com",
+      pass: "12345#goals"
     }
+    
   });
 
 
@@ -36,14 +37,22 @@ exports.create = (req, res) => {
     var pwdhash = pwd.digest('hex');
 // mail '1867b39b6a-093ede+1@inbox.mailtrap.io'
    var mailOptions = {
-        from:  'osubor63@hotmail.com',
+        from:  'fiveplanner@hotmail.com',
         to: ""+email+"",
         subject: "No-Reply: Welcome to FIVE Planner",
-        html: "<h1>Hello "+name+", </h1> "+
-                "<p class='mt-5'>Welcome to FIVE Planneryour goal acheiving aid, you have made the right choice.</p> "+
-                "<p class='my-5'><img src='/component/5logo.png' alt='' ></p> "+
-                 "<p class='mt-5'>visit the website <a>FIVE Planner</a> to create your goal plans and start your journey to success.</p>"
-    }
+        html: "<h3>Hello "+name+", </h3> "+
+              "<p class='my-5'><img style='width:50px;' src='cid:unique@cid' alt='' ></p> "+
+              "<p class='mt-5'>Welcome to FIVE Planneryour goal acheiving aid, you have made the right choice.</p> "+
+              "<p class='mt-5'>visit the website <a href='five-planner.herokuapp.com/login'>FIVE Planner</a> to create your goal plans and start your journey to success.</p>",
+    
+        attachments:        [
+                    {
+                        filename: '5logo.png',
+                        path: 'public/component/5logo.png',
+                        cid: 'unique@cid'
+                    }
+                ]
+        }
     
 pool.getConnection((err, connection) => {
     if(err) throw err; //not connected

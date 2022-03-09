@@ -1,4 +1,6 @@
 const mysql = require('mysql')
+const nodemailer = require('nodemailer')
+const cron = require('node-cron')
 
 //Create connection
 const pool = mysql.createPool({
@@ -8,6 +10,18 @@ const pool = mysql.createPool({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME
 });
+
+//transporter
+var transport = nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "de7d45e19d4662",
+      pass: "f27d54f42d0e61"
+    }
+    
+    
+  });
 
 
 //add new goal
@@ -82,6 +96,29 @@ exports.create = (req, res) => {
 
                 if(!err){
                     res.render('goalplan/priorities', {user, goal, prior, int});
+                    var mailOptions = {
+                        from:  '1867b39b6a-093ede+1@inbox.mailtrap.io',
+                        to: ""+user[0].email+"",
+                        subject: "FIVE Planner: New Goal Plan",
+                        html: "<p class='my-5'><img style='width:80px;' src='cid:unique@cid' alt='' ></p> "+
+                            "<h3>Hello "+user[0].name+", </h3> "+
+                            "<p style ='margin-top: 5px;'>You have made a new "+category+" goal plan </p>"+
+                            "<p style ='margin: 10px;'><b>"+title+"</b>, from <b>"+startDate+" </b> to <b>"+endDate+"</b> </p>"+
+                            "<p style ='margin-top: 5px;'>let's do our best to achieve it together.</p>",
+                
+                        attachments:        [
+                                    {
+                                        filename: '5logo.png',
+                                        path: 'public/component/5logo.png',
+                                        cid: 'unique@cid'
+                                    }
+                                ]
+                        }
+                         // send email
+                            transport.sendMail(mailOptions, (err, info) => {
+                                if (err) throw(err) 
+                                console.log('Message sent');   
+                            });
                 } else {
                     console.log(err);
                 }
@@ -225,6 +262,32 @@ exports.goalplan = (req, res) => {
                 connection.release();
                 if(!err){
                     res.render('goalplan/overview',{ user, goal, prior, dist })
+                        var mailOptions = {
+                            from:  '1867b39b6a-093ede+1@inbox.mailtrap.io',
+                            to: ""+user[0].email+"",
+                            subject: "FIVE Planner: Goal Plan Reminder",
+                            html: "<p class='my-5'><img style='width:80px;' src='cid:unique@cid' alt='' ></p> "+
+                                "<h3>Hello "+user[0].name+", </h3> "+
+                                "<p style ='margin-top: 10px; >It's the end of the week, this is just to remind you of your goal <b>"+goal[0].category+"</b> plan</p>"+
+                                "<p style ='margin: 10px;'><b>"+goal[0].title+"</b>, from <b>"+goal[0].startDate+" </b> to <b>"+goal[0].endDate+"</b> </p>"+
+                                "<p style ='margin-top: 5px;'>Have you checked out the priorities you need to achieve? </p>"+
+                                "<p style ='margin-top: 5px;'>There is still time to get them done if you have not, so do not feel discouraged, There might be some difficulties along the way but let's not give up, your reward- <b>"+goal[0].reward+"</b> waits.</p>" +
+                                "<p style ='margin-top: 10px;'> FIVE Planner is always here for you. </p>",
+                            attachments:        [
+                                    {
+                                        filename: '5logo.png',
+                                        path: 'public/component/5logo.png',
+                                        cid: 'unique@cid'
+                                    }
+                                ]
+                        }
+                             // send email
+                             cron.schedule('0 7 * * SAT',() => {
+                                transport.sendMail(mailOptions, (err, info) => {
+                                    if (err) throw(err) 
+                                    console.log('Message sent');   
+                                });
+                             })
                 } else {
                     console.log(err);
                 }
