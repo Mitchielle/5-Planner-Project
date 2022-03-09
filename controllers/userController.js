@@ -116,7 +116,8 @@ pool.getConnection((err, connection) => {
             res.render('validate/login', {message: "Incorrect password"});
         } else {
             req.session.loggedin = true;
-            var sqli = "SELECT * FROM goals WHERE user_id = ? ";
+            var sqli = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+            "  description, resources, reward FROM goals WHERE user_id = ? ";
             connection.query(sqli, [user[0].id], (err, goal) => {
                 if(err)throw(err);
                 
@@ -140,7 +141,8 @@ exports.view = (req, res) => {
     //Use the connection
     connection.query(sqli, [req.params.id], (err, user) => {
         if(err)throw(err);
-        var sql = "SELECT * FROM goals WHERE user_id = ? "; 
+        var sql = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward FROM goals WHERE user_id = ? "; 
         //Use the connection
         connection.query(sql, [req.params.id] , (err, goal) => {
             if(err)throw(err);
