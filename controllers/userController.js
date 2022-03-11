@@ -72,7 +72,7 @@ pool.getConnection((err, connection) => {
         connection.release();
 
         if(!err){
-            res.render('validate/login', {alert: "Congratulations!! This was an important decision, many more to come!" });
+            res.render('validate/login', {message: "Congratulations!! This was an important decision, many more to come!" });
             // send email
             transport.sendMail(mailOptions, (err, info) => {
                 if (err) throw(err) 
