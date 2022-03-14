@@ -282,7 +282,7 @@ exports.goalplan = (req, res) => {
                                 ]
                         }
                              // send email every Saturday at 7am 
-                             cron.schedule('0 0 * * 1',() => {
+                             cron.schedule('0 9 * * 1',() => {
                                 transport.sendMail(mailOptions, (err, info) => {
                                     if (err) throw(err) 
                                     console.log('Message sent');   
