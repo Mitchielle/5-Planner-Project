@@ -1,6 +1,5 @@
 const mysql = require('mysql')
 const nodemailer = require('nodemailer')
-const cron = require('node-cron')
 
 //Create connection
 const pool = mysql.createPool({
@@ -100,11 +99,12 @@ exports.create = (req, res) => {
                         from:  'fiveplanner@hotmail.com',
                         to: ""+user[0].email+"",
                         subject: "FIVE Planner: New Goal Plan",
-                        html: "<p class='my-5'><img style='width:80px;' src='cid:unique@cid' alt='' ></p> "+
+                        html: 
                             "<h3>Hello "+user[0].name+", </h3> "+
-                            "<p style ='margin-top: 5px;'>You have made a new "+category+" goal plan </p>"+
-                            "<p style ='margin: 10px;'><b>"+title+"</b>, from <b>"+startDate+" </b> to <b>"+endDate+"</b> </p>"+
-                            "<p style ='margin-top: 5px;'>let's do our best to achieve it together.</p>",
+                            "<p style ='margin-top: 10px;'>You have made a new "+goal[0].category+" goal plan </p>"+
+                            "<p style ='margin: 10px;'><b>"+goal[0].title+"</b>, from <b>"+goal[0].startDate+" </b> to <b>"+goal[0].endDate+"</b> </p>"+
+                            "<p style ='margin-top: 5px;'>let's do our best to achieve it together.</p>"+
+                            "<p class='my-5'><img style='width:50px;' src='cid:unique@cid' alt='' ></p> ",
                 
                         attachments:        [
                                     {
@@ -118,7 +118,7 @@ exports.create = (req, res) => {
                             transport.sendMail(mailOptions, (err, info) => {
                                 if (err) throw(err) 
                                 console.log('Message sent');   
-                            });
+                        });
                 } else {
                     console.log(err);
                 }
@@ -262,32 +262,8 @@ exports.goalplan = (req, res) => {
                 connection.release();
                 if(!err){
                     res.render('goalplan/overview',{ user, goal, prior, dist })
-                        var mailOptions = {
-                            from:  'fiveplanner@hotmail.com',
-                            to: ""+user[0].email+"",
-                            subject: "FIVE Planner: Goal Plan Reminder",
-                            html: "<p class='my-5'><img style='width:80px;' src='cid:unique@cid' alt='' ></p> "+
-                                "<h3>Hello "+user[0].name+", </h3> "+
-                                "<p style ='margin-top: 10px; >It's the end of the week, this is just to remind you of your goal <b>"+goal[0].category+"</b> plan</p>"+
-                                "<p style ='margin: 10px;'><b>"+goal[0].title+"</b>, from <b>"+goal[0].startDate+" </b> to <b>"+goal[0].endDate+"</b> </p>"+
-                                "<p style ='margin-top: 5px;'>Have you checked out the priorities you need to achieve? </p>"+
-                                "<p style ='margin-top: 5px;'>There is still time to get them done if you have not, so do not feel discouraged, There might be some difficulties along the way but let's not give up, your reward- <b>"+goal[0].reward+"</b> waits.</p>" +
-                                "<p style ='margin-top: 10px;'> FIVE Planner is always here for you. </p>",
-                            attachments:        [
-                                    {
-                                        filename: '5logo.png',
-                                        path: 'public/component/5logo.png',
-                                        cid: 'unique@cid'
-                                    }
-                                ]
-                        }
-                             // send email every Saturday at 7am 
-                             cron.schedule('0 9 * * 1',() => {
-                                transport.sendMail(mailOptions, (err, info) => {
-                                    if (err) throw(err) 
-                                    console.log('Message sent');   
-                                });
-                             })
+
+
                 } else {
                     console.log(err);
                 }
@@ -412,7 +388,7 @@ var sqlg = "SELECT *, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORM
 connection.query(sqlg, [req.params.id], (err, goal) => {
     if(err)throw(err);
 //get completed
-        var sqls = "SELECT c.id, g.id, COUNT (c.id) as comp, COUNT (g.id) as tgoal, COUNT (g.id) - COUNT (c.id) as gleft FROM complete as c RIGHT JOIN goals as g ON g.id=c.goal_id ORDER BY g.id";
+        var sqls = "SELECT c.id, g.id, g.title, COUNT (c.id) as comp, COUNT (g.id) as tgoal, COUNT (g.id) - COUNT (c.id) as gleft FROM complete as c RIGHT JOIN goals as g ON g.id=c.goal_id ORDER BY g.id";
         //Use the connection
         connection.query(sqls, (err, done) => {
             if(err)throw(err);
@@ -504,16 +480,21 @@ exports.delgoal = (req, res) => {
         //Use the connection
         connection.query(sqlg, [req.params.id] , (err, goal) => {
             //when done with the connection release it
-            connection.release();
-
+            var sqlc = "SELECT goal_id FROM complete WHERE user_id = ?";
+            //Use the connection
+            connection.query(sqlc, [req.params.id], (err, done) => {
+                if(err)throw(err);
+                connection.release();
+            
             if(!err){
-                res.render('goalplan/index',{ user, goal, message: "Goal plan successfully deleted." })
+                res.render('goalplan/index',{ user, goal, done, message: "Goal plan successfully deleted." })
             } else {
                 console.log(err);
             }
             console.log('The user data from: \n', user, goal);
         });
     });
+});
 });
 });
 });
