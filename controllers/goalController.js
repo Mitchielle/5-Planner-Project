@@ -476,7 +476,8 @@ exports.delgoal = (req, res) => {
     //Use the connection
     connection.query(sqli, [req.params.id], (err, user) => {
         if(err)throw(err);
-        var sqlg = "SELECT * FROM goals WHERE user_id = ? "; 
+        var sqlg = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward FROM goals WHERE user_id = ?"; 
         //Use the connection
         connection.query(sqlg, [req.params.id] , (err, goal) => {
             //when done with the connection release it
