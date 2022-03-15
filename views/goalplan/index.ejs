@@ -26,16 +26,14 @@
                     </div>
                     
                     <div class="d-flex justify-content-end cardlinks mt-4">
-                        <% if(done != 0) { %>
-                            <% done.forEach(done => { %>
-                                <% if(done.goal_id === goal.id){ %>
+                       
                             <h5 class="text-danger">Completed</h5>
-                    <%} else { %>
+                   
                         <a href="/goals/edit/<%= user[i].id %>/<%= goal.id %>" class="ms-3 d-none d-lg-block">Edit</a>
-                        <% } %>
+                        
                         <a href="/goals/overview/<%= user[i].id %>/<%= goal.id %>" class="ms-3">Preview</a>
                         <a href="/goals/delgoal/<%= user[i].id %>/<%= goal.id %>" class="ms-3">Delete</a>
-                        <% })} %>
+                        
                         </div> 
                 </div> 
             </div> 
