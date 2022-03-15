@@ -696,46 +696,51 @@ var sql = "INSERT INTO priorities (goal_id, intervalset, intervals, priority, du
 
 //complete
 exports.complete = (req, res) => {
-
-    var goal_id = req.params.goalid
-
     //Connect to MySQL
     pool.getConnection((err, connection) => {
         if(err) throw err; //not connected
         console.log('Connected as ID ' + connection.threadId);
-    //insert complete
+        var sqli = "SELECT * FROM user WHERE id = ? ";
+    //Use the connection
+    connection.query(sqli, [req.params.id], (err, user) => {
+        if(err)throw(err);
+        var sqls =  "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward, complete FROM goals WHERE user_id = ?"; 
+        //Use the connection
+        connection.query(sqls, [req.params.id] , (err, goal) => {
+            if(err)throw(err);
+
+            //when done with the connection release it
+            //insert complete
     var sqlr = "SELECT goal_id FROM complete where goal_id = ?";
     connection.query(sqlr, [req.params.goalid], (err, result) => {
-        var sqli = "SELECT * FROM user WHERE id = ? ";
-        //Use the connection
-        connection.query(sqli, [req.params.id], (err, user) => {
-            if(err)throw(err);
-            var sqls = "SELECT * FROM goals WHERE user_id = ? "; 
-            //Use the connection
-            connection.query(sqls, [req.params.id] , (err, goal) => {
-                if(err)throw(err);
-            var sql = "SELECT * FROM complete WHERE goal_id = ? ";
-            //Use the connection
-            connection.query(sql, [req.params.goalid], (err, done) => {
-                //when done with the connection release it
-        if (err)throw(err);
+        if (err){
             console.log(err);
-       if(result.length > 0){
-          res.render('goalplan/index',{ user, goal, done });
+        } else if(result.length > 0){
+          res.render('goalplan/index',{ user, goal });
         } else {
-    var sqlc = "INSERT INTO complete (goal_id) VALUES ("+req.params.goalid+")";
+    var sqlc = "INSERT INTO complete (goal_id, user_id) VALUES ("+req.params.goalid+", "+req.params.id+")";
     //Use the connection
-    connection.query(sqlc, (err, complete) => {
+    connection.query(sqlc, (err) => {
     if(err)throw(err);
+    var sqlg = "UPDATE goals SET complete = 'true' WHERE id = ? ";
+    //Use the connection
+    connection.query(sqlg,[req.params.goalid], (err, complete) => {
+    if(err)throw(err);
+    var sqls =  "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
+        "  description, resources, reward, complete FROM goals WHERE user_id = ?"; 
+        //Use the connection
+        connection.query(sqls, [req.params.id] , (err, goal) => {
+            if(err)throw(err);
             connection.release();
-            if(!err){
-                res.render('goalplan/index',{ user, goal, done })
-            } else {
-                console.log(err);
-            }
+
+                res.render('goalplan/index',{ user, goal })
+           
             console.log('The user data from: \n', user, goal);
         });
-    }});
+    });
+});
+};
 });
 });
 });

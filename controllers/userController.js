@@ -122,15 +122,11 @@ pool.getConnection((err, connection) => {
         } else {
             req.session.loggedin = true;
             var sqli = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
-            "  description, resources, reward FROM goals WHERE user_id = ? ";
+            "  description, resources, reward, complete FROM goals WHERE user_id = ? ";
             connection.query(sqli, [user[0].id], (err, goal) => {
                 if(err)throw(err);
-            var sqlc = "SELECT goal_id FROM complete WHERE user_id = ?";
-                //Use the connection
-                connection.query(sqlc, [user[0].id], (err, done) => {
-                    if(err)throw(err);
                 
-            res.render('goalplan/index', {user, goal, done});
+            res.render('goalplan/index', {user, goal});
             if(goal.length > 0){
             if(complete != 0) { complete.forEach(complete =>{ 
             const mailOptions = {
@@ -166,7 +162,6 @@ pool.getConnection((err, connection) => {
             })}
             }
             })
-        })
     }
         console.log('The user data from: \n', user);
         });
@@ -186,27 +181,22 @@ exports.view = (req, res) => {
     connection.query(sqli, [req.params.id], (err, user) => {
         if(err)throw(err);
         var sql = "SELECT id, title, category, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate ,"+
-        "  description, resources, reward FROM goals WHERE user_id = ? "; 
+        "  description, resources, reward, complete FROM goals WHERE user_id = ? "; 
         //Use the connection
         connection.query(sql, [req.params.id] , (err, goal) => {
             if(err)throw(err);
-        var sqlc = "SELECT goal_id FROM complete WHERE user_id = ? ";
-            //Use the connection
-            connection.query(sqlc, [req.params.id], (err, done) => {
                 //when done with the connection release it
                 connection.release();
 
             if(!err){
-                res.render('goalplan/index',{ user, goal, done })
+                res.render('goalplan/index',{ user, goal })
             } else {
                 console.log(err);
             }
-            console.log('The user data from: \n', user, goal, done);
+            console.log('The user data from: \n', user, goal);
         });
     });
 });
-});
-
 }
 
 //view profile
