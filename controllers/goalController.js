@@ -580,7 +580,7 @@ pool.getConnection((err, connection) => {
                 if(err)throw(err);
             connection.release();
             if(!err){
-                res.render('goalplan/overview',{ user, goal, prior, dist })
+                res.render('goalplan/edit_goal',{ user, goal, prior, dist })
             } else {
                 console.log(err);
             }
