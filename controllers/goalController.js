@@ -383,24 +383,35 @@ exports.track = (req, res) => {
 //get goals
 var sqlg = "SELECT *, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORMAT(endDate, '%d/%m/%Y') as endDate,"+
 "   DATEDIFF(endDate, startDate) as Ttime, DATEDIFF(endDate, CURDATE()) as Tleft,  "+
-"p.id, p.goal_id, COUNT(*) as tprior, COUNT(IF(checked = 'true', 1, NULL)) 'tick', COUNT(IF(checked = '', 1, NULL)) 'notick', COUNT(DISTINCT(intervalset)) as intset FROM goals as g JOIN priorities as p ON g.id=p.goal_id WHERE user_id = ? GROUP BY  g.id";
+"p.id, p.goal_id, COUNT(*) as tprior, COUNT(IF(checked = 'true', 1, NULL)) 'tick', COUNT(IF(checked = '', 1, NULL)) 'notick', COUNT(DISTINCT(intervalset)) as intset FROM goals as g LEFT JOIN priorities as p ON g.id=p.goal_id WHERE user_id = ? GROUP BY  g.id";
 //Use the connection
 connection.query(sqlg, [req.params.id], (err, goal) => {
     if(err)throw(err);
 //get completed
-        var sqls = "SELECT c.id, c.user_id, g.id, g.title, COUNT (c.id) as comp, COUNT (g.id) as tgoal, COUNT (g.id) - COUNT (c.id) as gleft FROM complete as c RIGHT JOIN goals as g ON g.id=c.goal_id WHERE c.user_id = req.params.id ORDER BY g.id";
-        //Use the connection
-        connection.query(sqls, (err, done) => {
+ var sqls = "SELECT COUNT (id) as comp FROM complete WHERE user_id = "+req.params.id+"";
+//Use the connection
+// var sqls = "SELECT COUNT(id) tgoal FROM goals WHERE user_id = "+req.params.id+" UNION SELECT COUNT (id) comp FROM complete WHERE user_id = "+req.params.id+" UNION  ";
+connection.query(sqls, (err, done) => {
+    if(err)throw(err);
+//get ongoing
+var sqlf = "SELECT (SELECT COUNT(id) FROM goals WHERE user_id = "+req.params.id+") - (SELECT COUNT(id) FROM complete WHERE user_id = "+req.params.id+") as gleft";
+        connection.query(sqlf, (err, gleft) => {
             if(err)throw(err);
+//get total goals
+var sql = "SELECT COUNT(id) as tgoal FROM goals WHERE user_id = "+req.params.id+"";
+connection.query(sql, (err, tgoal) => {
+    if(err)throw(err);
         connection.release();
         if(!err){
-            res.render('goalplan/progress',{ user, goal, done})
+            res.render('goalplan/progress',{ user, goal, done, gleft, tgoal})
         } else {
             console.log(err);
         }
         console.log('The user data from: \n', user, goal, done);
         });
     });
+});
+});
 });
 });
 }
