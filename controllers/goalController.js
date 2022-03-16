@@ -388,9 +388,9 @@ var sqlg = "SELECT *, DATE_FORMAT(startDate, '%d/%m/%Y') as startDate, DATE_FORM
 connection.query(sqlg, [req.params.id], (err, goal) => {
     if(err)throw(err);
 //get completed
-        var sqls = "SELECT c.id, g.id, g.title, COUNT (c.id) as comp, COUNT (g.id) as tgoal, COUNT (g.id) - COUNT (c.id) as gleft FROM complete as c RIGHT JOIN goals as g ON g.id=c.goal_id WHERE user_id = ? ORDER BY g.id";
+        var sqls = "SELECT c.id, g.id, g.title, COUNT (c.id) as comp, COUNT (g.id) as tgoal, COUNT (g.id) - COUNT (c.id) as gleft FROM complete as c RIGHT JOIN goals as g ON g.id=c.goal_id WHERE user_id = req.params.id ORDER BY g.id";
         //Use the connection
-        connection.query(sqls, [req.params.id], (err, done) => {
+        connection.query(sqls, (err, done) => {
             if(err)throw(err);
         connection.release();
         if(!err){
