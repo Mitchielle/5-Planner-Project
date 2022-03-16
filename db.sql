@@ -15,6 +15,7 @@ CREATE TABLE `goals` (
  `description` varchar(255) NOT NULL,
  `resources` varchar(255) NOT NULL,
  `reward` varchar(255) NOT NULL,
+ `complete` varchar(255),
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4
 
@@ -24,8 +25,8 @@ CREATE TABLE `priorities` (
  `intervalset` varchar(255) NOT NULL,
  `intervals` varchar(255) NOT NULL,
  `priority` varchar(255) NOT NULL,
- `dueDate` date NOT NULL,
- `checked` varchar(255) NOT NULL,
+ `dueDate` date,
+ `checked` varchar(255),
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=992 DEFAULT CHARSET=utf8mb4
 
