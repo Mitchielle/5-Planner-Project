@@ -34,7 +34,10 @@
                         <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Reward yourself for achieving this goal" style="color:#0062CC"></i>
                         <textarea type="text" name="reward" id="reward" class="form-control"><%= goal[i].reward%></textarea>
                     </div>
-                   
+                    <div class="d-flex justify-content-end mb-3">
+                        <button type="submit" class="btn btn-secondary rounded-pill">Save</button>
+                    </div>
+                </form>
                      <!--Priorites-->
                      <div class="row mb-3">
                         <%- include('../partials/_priorities') %>
@@ -304,10 +307,6 @@
                      </div>
                 </div>
                 <div class="d-flex justify-content-end mb-3">
-                    <div class="d-flex justify-content-end mb-3">
-                        <button type="submit" class="btn btn-secondary rounded-pill px-3 d-none d-lg-block">Save</button>
-                    </div>
-                </form>
                     <a href="/goals/overview/<%= user[i].id %>/<%= goal[i].id %>" class="btn btn-secondary rounded-pill px-3 d-none d-lg-block" >Done</a>
                     <button type="button" class="btn btn-secondary rounded-pill px-3 ms-2 d-none d-lg-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                        Achieved</button>
