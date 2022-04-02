@@ -152,7 +152,7 @@ pool.getConnection((err, connection) => {
                     ]
             }
         
-            // send email every Saturday at 7am 
+            // send email every at 6am on the first of every month 
             cron.schedule('0 6 1 * *',() => {
                 transport.sendMail(mailOptions, (err, info) => {
                     if (err) throw(err) 
